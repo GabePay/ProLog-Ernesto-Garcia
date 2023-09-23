@@ -91,6 +91,54 @@
 
 
 
+;; ---------------- Ejercicio 3
+;;    Escriba un programa que pida una letra minúscula, el programa deberá
+;;    imprimir si la letra es una vocal (a,e,i,o,u), semivocal (y) o una
+;;    consonante.
+
+(defun letras()
+    (print "Ingresa una letra en minuscula: ")
+    (setq letra (read))
+
+    (setq volcales '(a e i o u))
+    (setq consonantes '(b c d f g h j k l m n p q r s t v w x y z))
+
+    (cond
+        ((member letra volcales)(format t "la letra '~A' es una vocal" letra))
+        ((member letra consonantes)(format t "la letra '~A' es una consonante" letra))
+        (t (format t "quien sabe que ingresaste compa"))
+    )
+    
+)
+
+
+;; 4. Para determinar si un año es bisiesto o no debe de cumplir las
+;;    siguiente regla: Ser divisible entre 4 y no divisible entre 100 o
+;;    bien divisible entre 400.  Escriba un programa que pida como entrada
+;;    el año e imprima si el año es bisiesto o no.
+
+(defun anioBisiesto(anio)
+    (when (and (= (mod anio 4) 0) (= (mod anio 400) 0))
+        (format t "El año '~A' si es bisiesto" anio)
+    )
+
+    (unless (and (= (mod anio 4) 0) (= (mod anio 400) 0))
+        (format t "El año '~A' no es bisiesto" anio)
+    )
+    
+)
+
+;; 5. Escriba un programa que pida el numero de mes (del 1 al 12 ) e
+;;    imprima el numero de dias que tiene el mes, donde:
+
+;;    • El mes 2 tiene 28 dias
+;;    • Los meses 4,6,9 y 11 tienen 30 dias
+;;    • Los meses 1,3,5,7,8,10 y 12 tienen 31 dias
+
+;;    Si da un mes diferente a los anteriores debera imprimir el mensaje
+;;    “MES ERRONEO”.
+
+
 
 
 
