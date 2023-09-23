@@ -117,7 +117,10 @@
 ;;    bien divisible entre 400.  Escriba un programa que pida como entrada
 ;;    el año e imprima si el año es bisiesto o no.
 
-(defun anioBisiesto(anio)
+(defun anioBisiesto()
+    (print "Ingresa un año para corroborar si es bisiesto: ")
+    (setq anio (read))
+
     (when (and (= (mod anio 4) 0) (= (mod anio 400) 0))
         (format t "El año '~A' si es bisiesto" anio)
     )
@@ -137,6 +140,26 @@
 
 ;;    Si da un mes diferente a los anteriores debera imprimir el mensaje
 ;;    “MES ERRONEO”.
+
+(defun diasMeses()
+    (print "Ingresa el numero de un mes (1-12) ")
+    (setq mes (read))
+
+    (setq treintaDias (list 4 6 9 11))
+    (setq treintaUnoDias (list 1 3 5 7 8 10 12))
+
+    (if (and (> mes 0) (<= mes 12))
+
+        (cond
+            ((member mes treintaUnoDias) (format t "El mes ~A tiene 31 dias" mes))
+            ((member mes treintaDias) (format t "El mes ~A tiene 30 dias" mes))
+            ((eq mes 2) (format t "El mes ~A tiene 28 dias" mes))
+        )
+
+
+        (format t "El mes ingresado no existe")
+    )
+)
 
 
 
