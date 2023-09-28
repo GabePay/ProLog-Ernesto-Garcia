@@ -98,15 +98,17 @@
 
 (defun letras()
     (print "Ingresa una letra en minuscula: ")
-    (setq letra (read))
+    (setq letra (read-char))
 
-    (setq volcales '(a e i o u))
-    (setq consonantes '(b c d f g h j k l m n p q r s t v w x y z))
+    (setq volcales `(#\a #\e #\i #\o #\u))
+    (setq consonantes `(#\b #\c #\d #\f #\g #\h #\j #\k #\l #\m #\n #\p #\q #\r #\s #\t #\v #\w #\x #\z))
+    (setq semivocal `(#\y))
 
     (cond
-        ((member letra volcales)(format t "la letra '~A' es una vocal" letra))
-        ((member letra consonantes)(format t "la letra '~A' es una consonante" letra))
-        (t (format t "quien sabe que ingresaste compa"))
+         ((member letra volcales)(format t "la letra '~A' es una vocal" letra))
+         ((member letra consonantes)(format t "la letra '~A' es una consonante" letra))
+         ((member letra semivocal)(format t "la letra '~A' es una semivocal" letra))
+         (t (format t "quien sabe que ingresaste compa"))
     )
     
 )
