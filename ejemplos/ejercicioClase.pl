@@ -28,8 +28,8 @@
 %
     3.- Hay hombres que ni son libres ni sienten ningun deseo de serlo.
 
-    -cuantificador: Hay
-    -propiedad: hombres
+    -cuantificador: Algunos
+    -propiedad: ni son libres ni sienten
     -Variables: hombre
     -variables de individuo: hombre
     -predicado: monario
