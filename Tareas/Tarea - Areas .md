@@ -289,3 +289,6 @@ Esta funcion es de ejmplo para saber como se leen los datos y como utilizarlos e
     (setq aRombo (/ (* (sqrt 2) (* l l l)) 12))
 )
 ```
+
+>para imprimir en todas las funciones utilice el setq aRombo se me paso cambiarlo
+
