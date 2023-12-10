@@ -31,15 +31,17 @@ template(['Hola', soy, s(_), y, tengo, una, duda], ['Hola', yo, soy, eliza, '.',
 template(['Estas', disponible, '?'], ['Si', estoy, disponible, '.', en, que, te, puedo, ayudar, '?'],[]).
 
 
-
 %--------------------------------------------------------------------------------------------------
 % Templates sobre las enfermedades
 %--------------------------------------------------------------------------------------------------
 
 %que es la gota
+% ejemplo: Que es la gota ?
 template(['Que', es, la, s(_), _], [infoEnfermedad],[3]).
 template(['Sabes', que, es, la, s(_), _], [infoEnfermedad],[4]).
 template(['Me', puedes, decir, que, es, la, s(_), _], [infoEnfermedad],[6]).
+
+
 
 %causas
 template(['Que', causa, la, s(_), _], [causasEnfermedad],[3]).
@@ -90,9 +92,18 @@ template(['Que', es, un, s(_), '?'], [esp],[3]).
 
 
 %sintomas
-template(['Cuales', son, los, sintomas, de, la, gota, '?'], ['Los sintomas de la gota son los siguientes: enrojesimiento, Incomodidad, Eritema, Rigidez'],[]).
+
+
+template(['Cuales', son, los, sintomas, de, la, gota, '?'], ['Los sintomas de la gota son los siguientes: enrojesimiento, Incomodidad, eritema, rigidez'],[]).
 template(['La',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
 template(['El',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
+
+template(['Tengo', este, sintoma, s(_), '?'], [sint], [3]).
+
+template(['Tengo', estos, sintomas, s(_), s(_), s(_),'.'],[sintomasVarios],[3,4,5]).
+
+
+
 
 
 %--------------------------------------------------------------------------------------------------
@@ -147,6 +158,8 @@ template(['Cuales', los, niveles, de, las, rankeds, '?'], [Niveles],[]):- findal
 template(['Tiene', otros, modos, de, juego, '?'], ['Si, Tiene otro modo de juego que es bastante diferente llamado arena, despues esta el juego normal pero con 3 o 2 compañeros.'],[]).
 
 template(['De', que, trata, el, modo, arena, '?'], ['Es un modo de juego donde se enfrentan dos equipos de 3 personajes y pelean para saber quien sobrebive mas tiempo, es de rondas y quien gane mas rondas es el ganador de la partida, es 2 de 3.'],[]).
+
+
 
 
 
@@ -214,10 +227,23 @@ complicaciones(X, R):- \+enf(X), R = ['Una', disculpa, aun, no, tengo, conocimie
 
 sintomas(X, R):- sintoma(X), R = ['Si', X, es, un, sintoma, de, la, gota].			
 sintomas(X, R):- \+sintoma(X), R = ['No', X, no, es, un, sintoma, de, la, gota].
-sintoma('Enrojesimiento').
-sintoma('Incomodidad').
-sintoma('Eritema').
-sintoma('Rigidez').
+sintoma('enrojesimiento').
+sintoma('incomodidad').
+sintoma('eritema').
+sintoma('rigidez').
+
+
+encontrarSintomas(X,R):- sintomade(X,gota), R = ['Si tienes', X, es, probable, que, tengas , gota].
+encontrarSintomas(X,R):- \+sintomade(X,_), R = ['El sintoma', X, no, es, un, sintoma, de, la, gota].
+sintomade('enrojesimiento',gota).
+sintomade('incomodidad' ,gota).
+sintomade('eritema',gota).
+sintomade('rigidez',gota).
+
+buscarSintomas(X,Y,Z,R):- sintVarios(X, Y, Z), R=['Si tienes', X, Y, Z,' es probable que tengas la gota'].
+buscarSintomas(X,Y,Z,R):- \+sintVarios(X, Y, Z), R=['Los sintomas ingresados no son de la gota'].
+sintVarios('enrojesimiento', 'rigidez', 'eritema').
+
 
 
 pruebas(X,R,Y):- quePrueba(X,Y), R = ['Si la prueba:', X, es, una, prueba, de, la, gota, y ,':', Y].
@@ -245,6 +271,7 @@ apoyo('dieteticos','La Cleveland Clinic y la American Kidney Fund ofrecen consej
 especialistade(X,R):- especialista(X,Y), R = [Y].
 especialistade(X,R):- \+especialista(X,_), R = [ 'No tengo informacion de ese especialista'].
 especialista('Reumatologo', 'Son médicos que se especializan en el tratamiento de enfermedades relacionadas con los músculos y las articulaciones, así como en condiciones autoinmunes, colectivamente conocidas como enfermedades reumáticas').
+
 
 
 %--------------------------------------------------------------------
@@ -509,12 +536,20 @@ replace0([I|_], Input, _, Resp, R):-
 %	sintomasall(X,R).
 
 
+
 % informacion de las enfermedades
 replace0([I|_], Input, _, Resp, R):-
 	nth0(I, Input, Atom),
 	nth0(0, Resp, X),
 	X == infoEnfermedad,
 	enfermedad(Atom, R).
+
+% informacion de las enfermedades
+replace0([I|_], Input, _, Resp, R):-
+	nth0(I, Input, Atom),
+	nth0(0, Resp, X),
+	X == sint,
+	encontrarSintomas(Atom, R).
 
 % Causas de la enfermedad
 replace0([I|_], Input, _, Resp, R):-
@@ -557,6 +592,20 @@ replace0([I|_], Input, _, Resp, R):-
 	nth0(0, Resp, X),
 	X == esp,
 	especialistade(Atom, R).
+
+
+% sinotmas varios 
+replace0([I,L,M|_], Input, _, Resp, R):-
+	nth0(I, Input, Atom),
+	nth0(0, Resp, X),
+	X == sintomasVarios,
+	nth0(L, Input, Atom2),
+	nth0(0, Resp, Y),
+	Y == sintomasVarios,
+	nth0(M, Input, Atom3),
+	nth0(0, Resp, Z),
+	Z == sintomasVarios,
+	buscarSintomas(Atom, Atom2, Atom3, R).
 
 
 %--------------------------------------------------------------------
