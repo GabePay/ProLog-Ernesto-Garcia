@@ -94,7 +94,7 @@ template(['Que', es, un, s(_), '?'], [esp],[3]).
 %sintomas
 
 
-template(['Cuales', son, los, sintomas, de, la, gota, '?'], ['Los sintomas de la gota son los siguientes: enrojesimiento, Incomodidad, eritema, rigidez'],[]).
+template(['Cuales', son, los, sintomas, de, la, gota, '?'], ['Los sintomas de la gota son los siguientes: enrojesimiento, incomodidad, eritema, rigidez'],[]).
 template(['La',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
 template(['El',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
 
@@ -159,7 +159,7 @@ template(['Tiene', otros, modos, de, juego, '?'], ['Si, Tiene otro modo de juego
 
 template(['De', que, trata, el, modo, arena, '?'], ['Es un modo de juego donde se enfrentan dos equipos de 3 personajes y pelean para saber quien sobrebive mas tiempo, es de rondas y quien gane mas rondas es el ganador de la partida, es 2 de 3.'],[]).
 
-
+template(['Estos', s(_), s(_), s(_), son, leyendas, de, apex, '?'],[legenda],[1,2,3]).
 
 
 
@@ -240,9 +240,15 @@ sintomade('incomodidad' ,gota).
 sintomade('eritema',gota).
 sintomade('rigidez',gota).
 
-buscarSintomas(X,Y,Z,R):- sintVarios(X, Y, Z), R=['Si tienes', X, Y, Z,' es probable que tengas la gota'].
-buscarSintomas(X,Y,Z,R):- \+sintVarios(X, Y, Z), R=['Los sintomas ingresados no son de la gota'].
-sintVarios('enrojesimiento', 'rigidez', 'eritema').
+buscarSintomas(X,Y,Z,R):- sintoma(X), sintoma(Y), sintoma(Z), R=['Los sintomas', X, Y, Z,' son sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- \+sintoma(X), sintoma(Y), sintoma(Z), R=['Solo', Y, Z,' son sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- sintoma(X), \+sintoma(Y), sintoma(Z), R=['Solo', X, Z,' son sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- sintoma(X), sintoma(Y), \+sintoma(Z), R=['Solo', X, Y,' son sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- \+sintoma(X), \+sintoma(Y), sintoma(Z), R=['Solo', Z,' es sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- \+sintoma(X), sintoma(Y), \+sintoma(Z), R=['Solo', Y,' es sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- sintoma(X), \+sintoma(Y), \+sintoma(Z), R=['Solo', X,' es sintomas de la gota'].
+buscarSintomas(X,Y,Z,R):- \+sintoma(X), \+sintoma(Y), \+sintoma(Z), R=['Ninguno es sintomas de la gota'].
+
 
 
 
@@ -297,6 +303,19 @@ leyendaApex(bloodhund).
 leyendaApex(pathfinder).
 leyendaApex(crypto).
 leyendaApex(valkyrie).
+
+buscarLeyendas(X,Y,Z,R):- leyendaApex(X), leyendaApex(Y), leyendaApex(Z), R=['Si ', X, Y, Z,' son leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- \+leyendaApex(X), leyendaApex(Y), leyendaApex(Z), R=['Solo', Y, Z,' son leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- leyendaApex(X), \+leyendaApex(Y), leyendaApex(Z), R=['Solo', X, Z,' son leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- leyendaApex(X), leyendaApex(Y), \+leyendaApex(Z), R=['Solo', X, Y,' son leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- \+leyendaApex(X), \+leyendaApex(Y), leyendaApex(Z), R=['Solo', Z,' es leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- \+leyendaApex(X), leyendaApex(Y), \+leyendaApex(Z), R=['Solo', Y,' es leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- leyendaApex(X), \+leyendaApex(Y), \+leyendaApex(Z), R=['Solo', X,' es leyendas de apex legends'].
+buscarLeyendas(X,Y,Z,R):- \+leyendaApex(X), \+leyendaApex(Y), \+leyendaApex(Z), R=['No ninguna leyenda ingresada es leyendas de apex legends'].
+
+
+
+
 
 habilidadesTactica(X,R):- habilidadTactica(X,Y), R = [Y].
 habilidadesTactica(X,R):- \+habilidadTactica(X,_), R = [ 'No tengo informacion sobre la habilidad tactica de esa leyenda'].
@@ -646,6 +665,20 @@ replace0([I|_], Input, _, Resp, R):-
 	nth0(0, Resp, X),
 	X == pistol,
 	infoArmas(Atom, R).
+
+
+% apex buscar 
+replace0([I,L,M|_], Input, _, Resp, R):-
+	nth0(I, Input, Atom),
+	nth0(0, Resp, X),
+	X == legenda,
+	nth0(L, Input, Atom2),
+	nth0(0, Resp, Y),
+	Y == legenda,
+	nth0(M, Input, Atom3),
+	nth0(0, Resp, Z),
+	Z == legenda,
+	buscarLeyendas(Atom, Atom2, Atom3, R).
 
 
 
