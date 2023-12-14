@@ -95,6 +95,7 @@ template(['Que', es, un, s(_), '?'], [esp],[3]).
 
 
 template(['Cuales', son, los, sintomas, de, la, gota, '?'], ['Los sintomas de la gota son los siguientes: enrojesimiento, incomodidad, eritema, rigidez'],[]).
+
 template(['La',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
 template(['El',s(_), es, sintoma, de, la, gota, '?'], [likeSintomas],[1]).
 
@@ -240,16 +241,17 @@ sintomade('incomodidad' ,gota).
 sintomade('eritema',gota).
 sintomade('rigidez',gota).
 
+
 buscarSintomas(X,Y,Z,R):- sintoma(X), sintoma(Y), sintoma(Z), R=['Los sintomas', X, Y, Z,' son sintomas de la gota'].
+
 buscarSintomas(X,Y,Z,R):- \+sintoma(X), sintoma(Y), sintoma(Z), R=['Solo', Y, Z,' son sintomas de la gota'].
 buscarSintomas(X,Y,Z,R):- sintoma(X), \+sintoma(Y), sintoma(Z), R=['Solo', X, Z,' son sintomas de la gota'].
 buscarSintomas(X,Y,Z,R):- sintoma(X), sintoma(Y), \+sintoma(Z), R=['Solo', X, Y,' son sintomas de la gota'].
 buscarSintomas(X,Y,Z,R):- \+sintoma(X), \+sintoma(Y), sintoma(Z), R=['Solo', Z,' es sintomas de la gota'].
 buscarSintomas(X,Y,Z,R):- \+sintoma(X), sintoma(Y), \+sintoma(Z), R=['Solo', Y,' es sintomas de la gota'].
 buscarSintomas(X,Y,Z,R):- sintoma(X), \+sintoma(Y), \+sintoma(Z), R=['Solo', X,' es sintomas de la gota'].
+
 buscarSintomas(X,Y,Z,R):- \+sintoma(X), \+sintoma(Y), \+sintoma(Z), R=['Ninguno es sintomas de la gota'].
-
-
 
 
 pruebas(X,R,Y):- quePrueba(X,Y), R = ['Si la prueba:', X, es, una, prueba, de, la, gota, y ,':', Y].
